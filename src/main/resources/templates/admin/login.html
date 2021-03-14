@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <!--移动端更好的浏览的设置 宽度 缩放比例-->
+    <meta name="viewport" content="width">
+    <title>博客管理</title>
+    <!--引入Semantic UI 使用cdn资源 引入css-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{css/me.css}">
+</head>
+<body>
+    <br/>
+    <br/>
+    <br/>
+    <div class="m-container-small m-padded-tb-massive" style="max-width: 30em !important;">
+        <div class="ui center container">
+            <div class="ui middle aligned center aligned grid">
+                <div class="column">
+                    <h2 class="ui teal image header">
+                        <!--可以在这里引入我们的图标-->
+                        <div class="content">
+                            管理后台登录
+                        </div>
+                    </h2>
+                    <form class="ui large form" method="post" action="#" th:action="@{/admin/login}">
+                        <div class="ui segment">
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="user icon"></i>
+                                    <input type="text" name="username" placeholder="用户名">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="lock icon"></i>
+                                    <input type="password" name="password" placeholder="密码">
+                                </div>
+                            </div>
+                            <button class="ui fluid large teal submit button">登  录</button>
+                        </div>
+                        <!--前端自己的js控制的提示信息 用户名不可为空 密码不可为空-->
+                        <div class="ui error message"></div>
+                        <!--后台登录失败，传递过来的提示信息 th:unless判断后台传递过来的message是否为空，不为空就将th:text中message代表的信息显示-->
+                        <!--negative样式为红色-->
+                        <div class="ui negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+    <!--在 jsdelivr 中引入 jQuery cdn资源-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <!--引入Semantic UI 使用cdn资源 引入js-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+    <!--/*/</th:block>/*/-->
+
+    <!--表单信息不能为空的js控制 当用户名或者密码没有输就准备提交时，会提示下面信息-->
+    <script>
+        $('.ui.form').form({
+            fields: {
+                username : {
+                    identifier : 'username',
+                    rules : [{
+                        type : 'empty',
+                        prompt : '请输入用户名,用户名不可空'
+                    }]
+                },
+                password : {
+                    identifier : 'password',
+                    rules : [{
+                        type : 'empty',
+                        prompt : '请输入密码,密码不可为空'
+                    }]
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

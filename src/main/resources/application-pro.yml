@@ -1,0 +1,24 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      #比对实体与表，当实体修改后表会进行更改
+      ddl-auto: none
+    #将sql语句输出到控制台以及日志的文件里面
+    show-sql: true
+logging:
+  #设置日志的级别
+  level:
+    #SpringBoot框架本身的级别，默认是info 在生产环境可以设置成debug或warn
+    root: warn
+    #我们自己代码所在的包
+    com.yp.blog: info
+  #默认日志文件是在项目路径下，我们对其进行更改为如下路径 日志大小默认是10兆 超过之后会进行切分
+  file:
+    name: log/blog-pro.log

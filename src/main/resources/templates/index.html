@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!--会将这整个标签传递进去<title>首页</title>-->
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <!--移动端更好的浏览的设置 宽度 缩放比例-->
+    <meta name="viewport" content="width">
+    <title>首页</title>
+    <!--引入Semantic UI 使用cdn资源 引入css-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+    <!--导航 黑色-->
+    <nav th:replace="_fragments :: navigation(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui teal header item">Blog</h2>
+                <a href="#" class="active m-item item m-mobile-hide"><i class="home icon"></i>首页</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="idea icon"></i>分类</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="tags icon"></i>标签</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="clone icon"></i>归档</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="info icon"></i>关于我</a>
+                <div class="m-item right item m-mobile-hide">
+                    <div class="ui icon inverted transparent input">
+                        <input type="text" placeholder="Search......">
+                        <i class="search link icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+    <!--中间-->
+    <div class="m-container m-padded-tb-big">
+        <div class="ui container">
+            <div class="ui grid">
+                <!--左边的博客列表-->
+                <div class="eleven wide column">
+                    <!--header-->
+                    <div class="ui top attached segment">
+                        <div class="ui middle aligned two column grid">
+                            <div class="column">
+                                <h3 class="ui teal header">博客</h3>
+                            </div>
+                            <div class="right aligned column">
+                                <!--从page中得到总博客数量-->
+                                共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${page.totalElements}"> 14 </h2> 篇
+                            </div>
+                        </div>
+                    </div>
+                    <!--content-->
+                    <div class="ui attached segment">
+                        <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${page.content}">
+                            <!--垂直方向上居中middle aligned -->
+                            <div class="ui middle aligned mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <!--获取博客标题，并且为标题添加连接，点击标题进行博客详情页-->
+                                    <h3 class="ui header"><a th:text="${blog.title}" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">程序进程线程</a></h3>
+                                    <!--获取博客描述并且通过||进行拼接-->
+                                    <p class="m-text" th:text="|${blog.description}...|">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <!--获得头像-->
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+                                                    <!--获得该博客对应user的名字-->
+                                                    <div class="content"><a href="#" th:text="${blog.user.nickname}" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <!--获得博客最后更新的时间-->
+                                                    <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateDate,'yyyy-MM-dd')}">2021-1-28</span>
+                                                </div>
+                                                <div class="item">
+                                                    <!--获取浏览次数-->
+                                                    <i class="eye icon"></i><span th:text="${blog.views}">34</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <!--获取该博客所属分类-->
+                                            <a href="#" target="_blank" th:text="${blog.type.name}" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank" th:href="@{/blog/{id}(id=${blog.id})}">
+                                        <!--获得首图地址进行展示，并且为图片添加连接，点击图片进入博客详情页-->
+                                        <img src="https://picsum.photos/seed/picsum/800/450?image=1" th:src="@{${blog.firstPicture}}" alt="" class="ui rounded image">
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!--/*-->
+                        <div class="ui padded vertical segment m-padded-tb-large">
+                            <div class="ui mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">程序进程线程</h3>
+                                    <p class="m-text">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i> 2021-1-28
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i> 34
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank"></a>
+                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui rounded image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui padded vertical segment m-padded-tb-large">
+                            <div class="ui mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">程序进程线程</h3>
+                                    <p class="m-text">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i> 2021-1-28
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i> 34
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank"></a>
+                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui rounded image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui padded vertical segment m-padded-tb-large">
+                            <div class="ui mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">程序进程线程</h3>
+                                    <p class="m-text">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i> 2021-1-28
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i> 34
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank"></a>
+                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui rounded image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui padded vertical segment m-padded-tb-large">
+                            <div class="ui mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">程序进程线程</h3>
+                                    <p class="m-text">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i> 2021-1-28
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i> 34
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank"></a>
+                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui rounded image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui padded vertical segment m-padded-tb-large">
+                            <div class="ui mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">程序进程线程</h3>
+                                    <p class="m-text">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i> 2021-1-28
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i> 34
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank"></a>
+                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui rounded image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui padded vertical segment m-padded-tb-large">
+                            <div class="ui mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">程序进程线程</h3>
+                                    <p class="m-text">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i> 2021-1-28
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i> 34
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank"></a>
+                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui rounded image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui padded vertical segment m-padded-tb-large">
+                            <div class="ui mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">程序进程线程</h3>
+                                    <p class="m-text">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i> 2021-1-28
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i> 34
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank"></a>
+                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui rounded image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui padded vertical segment m-padded-tb-large">
+                            <div class="ui mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">程序进程线程</h3>
+                                    <p class="m-text">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i> 2021-1-28
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i> 34
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank"></a>
+                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui rounded image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui padded vertical segment m-padded-tb-large">
+                            <div class="ui mobile reversed grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">程序进程线程</h3>
+                                    <p class="m-text">程序（program）是为了完成特定任务、用某种语言编写的一组指令的集合。即指一段静态的代码，静态对象。进程...</p>
+                                    <div class="ui stackable grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header">赵银萍</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i> 2021-1-28
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i> 34
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="five wide column">
+                                    <a href="#" target="_blank"></a>
+                                    <img src="https://picsum.photos/seed/picsum/800/450?image=1" alt="" class="ui rounded image">
+                                </div>
+                            </div>
+                        </div>
+                        <!--*/-->
+                    </div>
+                    <!--footer-->
+                    <div class="ui bottom attached segment" th:if="${page.totalPages} > 1">
+                        <div class="ui two column grid">
+                            <div class="column">
+                                <!--点击上一页下一页触发请求，对page的number进行加一或者减一-->
+                                <a href="#" th:href="@{/(page=${page.number}-1)}" th:unless="${page.first}" class="ui mini teal basic button">上一页</a>
+                            </div>
+                            <div class="right aligned column">
+                                <a href="#" th:href="@{/(page=${page.number}+1)}" th:unless="${page.last}" class="ui mini teal basic button">下一页</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--右侧的top-->
+                <div class="five wide column">
+                    <!--分类-->
+                    <div class="ui segments">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="idea icon"></i>分类
+                                </div>
+                                <div class="right aligned column">
+                                    <a href="#" th:href="@{/types/-1}" target="_blank">more <i class="angle double right icon"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <div class="ui vertical fluid menu">
+                                <a href="#" target="_blank" th:href="@{/types/{id}(id=${type.id})}" class="item" th:each="type : ${types}">
+                                    <!--分类名称-->
+                                    <span th:text="${type.name}">学习日志</span>
+                                    <!--该分类有多少博客-->
+                                    <div class="ui teal basic left pointing label" th:text="${#arrays.length(type.blogs)}">23</div>
+                                </a>
+                                <!--/*-->
+                                <a href="#" class="item">
+                                    思考与情感
+                                    <div class="ui teal basic left pointing label">23</div>
+                                </a>
+                                <a href="#" class="item">
+                                    学习日志
+                                    <div class="ui teal basic left pointing label">23</div>
+                                </a>
+                                <a href="#" class="item">
+                                    学习日志
+                                    <div class="ui teal basic left pointing label">23</div>
+                                </a>
+                                <a href="#" class="item">
+                                    学习日志
+                                    <div class="ui teal basic left pointing label">23</div>
+                                </a>
+                                <a href="#" class="item">
+                                    学习日志
+                                    <div class="ui teal basic left pointing label">23</div>
+                                </a>
+                                <!--*/-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--标签-->
+                    <div class="ui segments m-margin-top-large">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="ui tags icon"></i>标签
+                                </div>
+                                <div class="right aligned column">
+                                    <a href="#" th:href="@{/types/-1}" target="_blank">more <i class="angle double right icon"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <!--获取tag标签，以及该标签对应博客的个数-->
+                            <a href="#" target="_blank" th:href="@{/tags/{id}(id=${tag.id})}" th:each="tag : ${tags}" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                <span th:text="${tag.name}">方法论</span> <div class="detail" th:text="${#arrays.length(tag.blogs)}">23</div>
+                            </a>
+                            <!--/*-->
+                            <a href="#" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                方法论 <div class="detail">23</div>
+                            </a>
+                            <a href="#" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                方法论 <div class="detail">23</div>
+                            </a>
+                            <a href="#" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                方法论 <div class="detail">23</div>
+                            </a>
+                            <a href="#" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                方法论 <div class="detail">23</div>
+                            </a>
+                            <a href="#" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                方法论 <div class="detail">23</div>
+                            </a>
+                            <a href="#" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                方法论 <div class="detail">23</div>
+                            </a>
+                            <a href="#" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                方法论 <div class="detail">23</div>
+                            </a>
+                            <a href="#" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                方法论 <div class="detail">23</div>
+                            </a>
+                            <a href="#" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                方法论 <div class="detail">23</div>
+                            </a>
+                            <!--*/-->
+                        </div>
+
+                    </div>
+                    <!--最新推荐-->
+                    <div class="ui segments m-margin-top-large">
+                        <div class="ui secondary segment">
+                            <i class="bookmark icon"></i>最新推荐
+                        </div>
+                        <div class="ui segment" th:each="blog : ${recommendBlogs}">
+                            <a href="#" target="_blank" th:href="@{/blog/{id}(id=${blog.id})}" class="m-black m-text-thin" th:text="${blog.title}">用户故事</a>
+                        </div>
+                        <!--/*-->
+                        <div class="ui segment">
+                            <a href="#" target="_blank" class="m-black m-text-thin">用户故事</a>
+                        </div>
+                        <div class="ui segment">
+                            <a href="#" target="_blank" class="m-black m-text-thin">用户故事</a>
+                        </div>
+                        <div class="ui segment">
+                            <a href="#" target="_blank" class="m-black m-text-thin">用户故事</a>
+                        </div>
+                        <div class="ui segment">
+                            <a href="#" target="_blank" class="m-black m-text-thin">用户故事</a>
+                        </div>
+                        <div class="ui segment">
+                            <a href="#" target="_blank" class="m-black m-text-thin">用户故事</a>
+                        </div>
+                        <div class="ui segment">
+                            <a href="#" target="_blank" class="m-black m-text-thin">用户故事</a>
+                        </div>
+                        <div class="ui segment">
+                            <a href="#" target="_blank" class="m-black m-text-thin">用户故事</a>
+                        </div>
+                        <!--*/-->
+                    </div>
+                    <!--二维码-->
+                    <h4 class="ui horizontal divider header m-margin-top-large">扫码关注我</h4>
+                    <div class="ui centered card" style="width: 11em">
+                        <img src="../static/images/wechat.jpg" th:src="@{/images/wechat.jpg}" alt="" class="ui rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!--底部footer-->
+    <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+        <div class="ui center aligned container">
+            <!--分成16份 3 3 3 3 4-->
+            <div class="ui inverted divided stackable grid">
+                <div class="three wide column">
+                    <div class="ui inverted link list">
+                        <div class="item">
+                            <img src="../static/images/wechat.jpg" th:src="@{images/wechat.jpg}" class="ui rounded image" alt="" style="width: 110px">
+                        </div>
+                    </div>
+                </div>
+                <div class="three wide column">
+                    <h4 class="ui inverted header m-text-spaced">最新微博</h4>
+                    <div class="ui inverted link list">
+                        <a href="#" class="item">用户故事</a>
+                        <a href="#" class="item">用户估值</a>
+                        <a href="#" class="item">用户故事</a>
+                    </div>
+                </div>
+                <div class="three wide column">
+                    <h4 class="ui inverted header m-text-spaced">联系我</h4>
+                    <div class="ui inverted link list">
+                        <a href="#" class="item">Email:nanorbei@sina.com</a>
+                        <a href="#" class="item">QQ:780475861</a>
+                    </div>
+                </div>
+                <div class="seven wide column">
+                    <h4 class="ui inverted header m-text-spaced">Blog</h4>
+                    <p class="m-text-thin m-text-spaced m-opacity-mini">
+                        这是一个个人博客分享网站，用于分享自己在学习过程中的反思、等.....,希望大家可以从中获得属于自己的知识
+                    </p>
+                </div>
+            </div>
+            <div class="ui inverted section divider"></div>
+            <p class="m-text-thin m-text-spaced m-opacity-tiny">
+                Copyright © 2020-2021 zyp
+            </p>
+        </div>
+    </footer>
+    <!--下面th:block标签不会影响页面显示，只是在thymeleaf渲染页面时才会起作用-->
+    <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+    <!--在 jsdelivr 中引入 jQuery cdn资源-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <!--引入Semantic UI 使用cdn资源 引入js-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+    <!--/*/</th:block>/*/-->
+    <script>
+        $('.menu.toggle').click(function () {
+            $('.m-item').toggleClass('m-mobile-hide');
+        })
+    </script>
+</body>
+</html>
